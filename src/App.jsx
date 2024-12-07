@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import { Toaster } from "react-hot-toast";
 import BackendRedirection from "./pages/BackendRedirection";
 import Layout from "./layout/Layout";
+import Reviews from "./pages/Reviews";
 
 function App() {
 
@@ -46,6 +47,13 @@ function App() {
                 <>
                   <PageTitle title="Organizations" />
                   <Home />
+                </>} />
+            <Route
+              path="/:name"
+              element={
+                <>
+                  <PageTitle title="Reviews" />
+                  <Reviews />
                 </>} />
           </Route>
         </Routes>
