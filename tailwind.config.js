@@ -5,7 +5,11 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        galano: ['"Galano Grotesque"', 'sans-serif'],
+      },
+    },
   },
   plugins: [],
 }

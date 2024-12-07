@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: "Galano Grotesque";
+  src: url("./assets/fonts/galano.otf") format("opentype");
+  font-weight: bold;
+  font-style: normal;
+}
