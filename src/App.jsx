@@ -8,6 +8,7 @@ import { Toaster } from "react-hot-toast";
 import BackendRedirection from "./pages/BackendRedirection";
 import Layout from "./layout/Layout";
 import Reviews from "./pages/Reviews";
+import Admin from "./pages/Admin";
 
 function App() {
 
@@ -54,6 +55,13 @@ function App() {
                 <>
                   <PageTitle title="Reviews" />
                   <Reviews />
+                </>} />
+            <Route
+              path="/admin"
+              element={
+                <>
+                  <PageTitle title="All Reviews" />
+                  <Admin />
                 </>} />
           </Route>
         </Routes>

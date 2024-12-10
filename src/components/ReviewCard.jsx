@@ -5,7 +5,7 @@ import { useUser } from '../context/context';
 import axios from '../utils/axiosInstance';
 import toast from 'react-hot-toast';
 
-const ReviewCard = ({ review, isChecked, updateHandler }) => {
+const ReviewCard = ({ review, isChecked, updateHandler, status }) => {
     const [isModalOpen, setModalOpen] = useState(false);
 
     const openModal = () => setModalOpen(true);
@@ -18,6 +18,16 @@ const ReviewCard = ({ review, isChecked, updateHandler }) => {
             },
         })
         toast.success(res.data.message);
+        window.location.reload();
+    }
+
+    const statusHandler = async (reviewId, status) => {
+        await axios.patch(`/reviews/${reviewId}`, { status }, {
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem('token')}`,
+            }
+        })
+        toast.success(status.toUpperCase());
         window.location.reload();
     }
 
@@ -56,6 +66,19 @@ const ReviewCard = ({ review, isChecked, updateHandler }) => {
             <p className='font-mono break-all'>
                 {review.content.slice(0, 200)} {review.content.length >= 200 && <span onClick={openModal} className='text-blue-600 cursor-pointer'>...Read More</span>}
             </p>
+            {
+                user.role === 'admin' &&
+                <div className='pr-4 flex justify-end gap-2'>
+                    {
+                        status !== "approved" &&
+                        <button className='cursor-pointer p-2 rounded-md mr-3 bg-green-500 text-white' onClick={() => statusHandler(review._id, "approved")}>Approve</button>
+                    }
+                    {
+                        status !== "rejected" &&
+                        <button className='cursor-pointer p-2 rounded-md mr-3 bg-red-400 text-white' onClick={() => statusHandler(review._id, "rejected")}>Reject</button>
+                    }
+                </div>
+            }
             <Modal isOpen={isModalOpen} onClose={closeModal}>
                 <div className='flex flex-col gap-2 p-2'>
                     <div>

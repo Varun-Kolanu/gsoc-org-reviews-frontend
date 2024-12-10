@@ -1,11 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
-// import StarRating from '../components/Rating';
 import StarRatings from 'react-star-ratings';
 import ReviewCard from '../components/ReviewCard';
 import Modal from '../components/Modal';
-import { Rating } from 'react-simple-star-rating';
-import Star from '../components/Star';
 import StarRating from '../components/Rating';
 import toast from 'react-hot-toast';
 import axios from '../utils/axiosInstance';
@@ -74,9 +71,7 @@ const Reviews = () => {
                     "Authorization": `Bearer ${localStorage.getItem('token')}`,
                 },
             })
-            toast.success("Review posted successfully");
-            setReviews(prev => [...prev, res.data]);
-            setFilteredReviews(prev => [...prev, res.data]);
+            toast.success("Review posted for review");
         } else {
             res = await axios.patch(`/reviews/${isUpdate._id}`, {
                 title,
@@ -96,11 +91,10 @@ const Reviews = () => {
 
     const handleCheck = (e) => {
         setIsChecked(e.target.checked)
-        setFilteredReviews(reviews.filter(review => review.user._id === user._id))
+        setFilteredReviews(filteredReviews.filter(review => review.user._id === user._id))
     }
 
     const updateHandler = (review) => {
-        console.log(review)
         setIsUpdate(review);
         setTitle(review.title)
         setContent(review.content)
