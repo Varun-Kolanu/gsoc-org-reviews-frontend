@@ -5,7 +5,7 @@ import { useUser } from '../context/context';
 import axios from '../utils/axiosInstance';
 import toast from 'react-hot-toast';
 
-const ReviewCard = ({ review, isChecked, updateHandler, status }) => {
+const ReviewCard = ({ review, isChecked, updateHandler, status, isAdminPage = false }) => {
     const [isModalOpen, setModalOpen] = useState(false);
 
     const openModal = () => setModalOpen(true);
@@ -68,7 +68,13 @@ const ReviewCard = ({ review, isChecked, updateHandler, status }) => {
             </p>
             {
                 user.role === 'admin' &&
-                <div className='pr-4 flex justify-end gap-2'>
+                <div className='pr-4 flex justify-end gap-2 items-center'>
+                    {
+                        isAdminPage &&
+                        <span className='mr-3 text-blue-500 font-semibold'>
+                            {review.orgName}
+                        </span>
+                    }
                     {
                         status !== "approved" &&
                         <button className='cursor-pointer p-2 rounded-md mr-3 bg-green-500 text-white' onClick={() => statusHandler(review._id, "approved")}>Approve</button>

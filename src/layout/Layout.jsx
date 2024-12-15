@@ -10,7 +10,6 @@ const Layout = memo(({ }) => {
     const location = useLocation();
     const { pathname } = location;
     useEffect(() => {
-
     }, [pathname]);
 
 
@@ -19,7 +18,11 @@ const Layout = memo(({ }) => {
             <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
                 {
                     user.role === "admin" &&
-                    <button className='rounded-md bg-blue-500 p-2 text-white fixed top-2 right-24 z-10' onClick={() => window.location.href = "/admin"}>Admin Panel</button>
+                    (
+                        pathname === "/admin" ?
+                            <button className='rounded-md bg-blue-500 p-2 text-white fixed top-2 right-24 z-10' onClick={() => window.location.href = "/"}>Home</button> :
+                            <button className='rounded-md bg-blue-500 p-2 text-white fixed top-2 right-24 z-10' onClick={() => window.location.href = "/admin"}>Admin Panel</button>
+                    )
                 }
                 <Logout />
                 <Outlet />

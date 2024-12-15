@@ -20,7 +20,6 @@ const Admin = () => {
 
     const debouncedHandleSearch = useMemo(() => {
         return debounce((value, st) => {
-            console.log(st, value);
             const filtered = reviews.filter((review) =>
                 review.status === st &&
                 (review.title?.toLowerCase().includes(value.trim().toLowerCase()) ||
@@ -84,7 +83,7 @@ const Admin = () => {
                                 {
                                     filteredReviews && filteredReviews.length > 0 ?
                                         filteredReviews.map(review => (
-                                            <ReviewCard key={review._id} review={review} isChecked={false} updateHandler={() => { }} status={status} />
+                                            <ReviewCard key={review._id} review={review} isChecked={false} updateHandler={() => { }} status={status} isAdminPage={true} />
                                         )) :
                                         <div>
                                             No Reviews found

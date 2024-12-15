@@ -71,7 +71,12 @@ const Reviews = () => {
                     "Authorization": `Bearer ${localStorage.getItem('token')}`,
                 },
             })
-            toast.success("Review posted for review");
+            toast.success("Your post is under review and will be approved soon. Thank you!", {
+                duration: 3000,
+                style: {
+                    fontWeight: '600',
+                },
+            });
         } else {
             res = await axios.patch(`/reviews/${isUpdate._id}`, {
                 title,
@@ -161,7 +166,7 @@ const Reviews = () => {
                                 {
                                     filteredReviews.length > 0 ?
                                         filteredReviews.map(review => (
-                                            <ReviewCard key={review._id} review={review} isChecked={isChecked} updateHandler={updateHandler} />
+                                            <ReviewCard key={review._id} review={review} isChecked={isChecked} updateHandler={updateHandler} status="approved" />
                                         )) :
                                         <div>
                                             No Reviews found
