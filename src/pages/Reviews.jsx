@@ -127,51 +127,79 @@ const Reviews = () => {
         <>
             {
                 loading ? <Loader /> :
-                    <div className='w-full h-[100vh] flex flex-col items-center'>
-                        <div className='flex flex-col items-center w-1/2 gap-6'>
-                            <h1 className='font-bold text-4xl font-galano'> {name} </h1>
-                            <div className='flex items-center justify-evenly bg-gray-100 p-6 rounded-md w-full'>
-                                <div className='flex flex-col pl-12 justify-evenly w-full h-full'>
-                                    <span className='text-2xl font-semibold'> {avgRating} / 5 </span>
-                                    <span className='text-gray-600 text-lg'>Average Rating</span>
-                                    <StarRatings
-                                        rating={avgRating}
-                                        starDimension="25px"
-                                        starSpacing="2px"
-                                        starRatedColor='orange'
-                                    />
-                                    <span className='mt-2 text-gray-600'>
+                    <div className='w-full min-h-screen flex flex-col items-center p-4'>
+                        <div className='flex flex-col items-center md:w-2/3 lg:w-1/2 gap-6'>
+                            <h1 className='mt-2 font-bold text-3xl md:text-4xl text-center font-galano'> {name} </h1>
+                            <div className='flex flex-col md:flex-row items-center justify-evenly bg-gray-100 p-6 md:p-10 rounded-md w-full gap-3'>
+                                <div className='flex flex-col items-center md:items-start pl-0 md:pl-6 w-full'>
+                                    <span className='text-2xl md:text-2xl font-semibold'>
+                                        {avgRating} / 5
+                                    </span>
+                                    <span className='text-gray-600 text-md md:text-lg'>
+                                        Average Rating
+                                    </span>
+                                    <div className='mt-2 cursor-pointer'>
+                                        <StarRatings
+                                            rating={avgRating}
+                                            starDimension="25px"
+                                            starSpacing="2px"
+                                            starRatedColor='orange'
+                                        />
+                                    </div>
+                                    <span className='mt-2 text-gray-600 text-md'>
                                         ({reviews.length} review{pluralized(reviews.length)})
                                     </span>
                                 </div>
-                                <div className='w-full h-full flex flex-col justify-center'>
-                                    <p className='font-semibold text-lg'>Contributed to this org before?</p>
-                                    <p>Please give your review to help others</p>
-                                    <button onClick={openModal} className='text-white bg-blue-500 rounded-md p-3 w-1/2 mt-2'>Post your review</button>
+                                <div className='w-full flex flex-col items-center md:items-start mt-4 md:mt-0'>
+                                    <p className='font-semibold text-md md:text-lg text-center md:text-left'>
+                                        Contributed to this org before?
+                                    </p>
+                                    <p className='text-sm text-gray-600 text-center md:text-left'>
+                                        Please give your review to help others
+                                    </p>
+                                    <button
+                                        onClick={openModal}
+                                        className='text-white bg-blue-500 hover:bg-blue-700 active:bg-blue-600 rounded-md p-2 md:p-3 w-3/4 md:w-1/2 mt-2'>
+                                        Post your review
+                                    </button>
                                 </div>
                             </div>
-                            <div className='flex justify-between'>
-                                <Search search={search} handleSearch={handleSearch} placeholder={"Search Reviews by title or content"} />
-                                <div className='flex items-center gap-2'>
+
+                            <div className='flex flex-col md:flex-row items-center justify-evenly gap-2'>
+                                <Search
+                                    search={search}
+                                    handleSearch={handleSearch}
+                                    placeholder={"Search Reviews by title or content"}
+                                />
+                                <div className='flex items-center gap-2 md:mt-0 mt-2'>
                                     <input
                                         type="checkbox"
                                         checked={isChecked}
                                         onChange={handleCheck}
                                         id='yours'
                                     />
-                                    <label htmlFor="yours">Your Reviews</label>
+                                    <label htmlFor="yours" className='text-sm md:text-base'>
+                                        Your Reviews
+                                    </label>
                                 </div>
                             </div>
+
                             <div className='w-full mt-4'>
-                                {
-                                    filteredReviews.length > 0 ?
-                                        filteredReviews.map(review => (
-                                            <ReviewCard key={review._id} review={review} isChecked={isChecked} updateHandler={updateHandler} status="approved" />
-                                        )) :
-                                        <div>
-                                            No Reviews found
-                                        </div>
-                                }
+                                {filteredReviews.length > 0 ? (
+                                    filteredReviews.map(review => (
+                                        <ReviewCard
+                                            key={review._id}
+                                            review={review}
+                                            isChecked={isChecked}
+                                            updateHandler={updateHandler}
+                                            status="approved"
+                                        />
+                                    ))
+                                ) : (
+                                    <div className='text-center text-gray-500'>
+                                        No Reviews found
+                                    </div>
+                                )}
                             </div>
                             <Modal isOpen={isModalOpen} onClose={closeModal}>
                                 <div className='flex flex-col items-center'>
