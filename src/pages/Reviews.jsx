@@ -59,26 +59,9 @@ const Reviews = () => {
             return toast.error("Please fill all the fields");
         }
 
-        let res;
         if (Object.keys(isUpdate).length === 0) {
-            res = await axios.post("/reviews", {
+            await axios.post("/reviews", {
                 orgName: name,
-                title,
-                review: content,
-                rating,
-            }, {
-                headers: {
-                    "Authorization": `Bearer ${localStorage.getItem('token')}`,
-                },
-            })
-            toast.success("Your post is under review and will be approved soon. Thank you!", {
-                duration: 3000,
-                style: {
-                    fontWeight: '600',
-                },
-            });
-        } else {
-            res = await axios.patch(`/reviews/${isUpdate._id}`, {
                 title,
                 content,
                 rating,
@@ -87,16 +70,32 @@ const Reviews = () => {
                     "Authorization": `Bearer ${localStorage.getItem('token')}`,
                 },
             })
-            const updatedReviews = reviews.map(review => review._id === isUpdate._id ? res.data : review);
-            setReviews(updatedReviews);
-            setFilteredReviews(updatedReviews);
+            toast.success("Thanks for the review!");
+        } else {
+            await axios.patch(`/reviews/${isUpdate._id}`, {
+                title,
+                content,
+                rating,
+            }, {
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem('token')}`,
+                },
+            })
         }
         closeModal();
+        window.location.reload();
     }
 
     const handleCheck = (e) => {
         setIsChecked(e.target.checked)
-        setFilteredReviews(filteredReviews.filter(review => review.user._id === user._id))
+        if (e.target.checked) {
+            setFilteredReviews(filteredReviews.filter(review => review.user._id === user._id))
+        } else {
+            setFilteredReviews(reviews.filter((review) =>
+                review.title?.toLowerCase().includes(search.trim().toLowerCase()) ||
+                review.content?.toLowerCase().includes(search.trim().toLowerCase())
+            ));
+        }
     }
 
     const updateHandler = (review) => {
@@ -117,7 +116,7 @@ const Reviews = () => {
             })
             setReviews(reviews.data.reviews);
             setFilteredReviews(reviews.data.reviews);
-            setAvgRating(reviews.data.averageRating);
+            setAvgRating(parseFloat(reviews.data.averageRating.toFixed(2)));
             setLoading(false);
         }
         fetchReviews();
@@ -192,7 +191,6 @@ const Reviews = () => {
                                             review={review}
                                             isChecked={isChecked}
                                             updateHandler={updateHandler}
-                                            status="approved"
                                         />
                                     ))
                                 ) : (
