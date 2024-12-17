@@ -4,6 +4,7 @@ import Modal from './Modal';
 import { useUser } from '../context/context';
 import axios from '../utils/axiosInstance';
 import toast from 'react-hot-toast';
+import { MarkdownComponent } from './MarkdownComponent';
 
 const ReviewCard = ({ review, isChecked, updateHandler, isAdminPage = false }) => {
     const [isModalOpen, setModalOpen] = useState(false);
@@ -52,9 +53,12 @@ const ReviewCard = ({ review, isChecked, updateHandler, isAdminPage = false }) =
                     starRatedColor='orange'
                 />
             </div>
-            <p className='font-mono break-all'>
-                {review.content.slice(0, 200)} {review.content.length >= 200 && <span onClick={openModal} className='text-blue-600 cursor-pointer'>...Read More</span>}
-            </p>
+            <div className='font-mono break-all'>
+                <MarkdownComponent>
+                    {review.content.slice(0, 200)}
+                </MarkdownComponent>
+                {review.content.length >= 200 && <span onClick={openModal} className='text-blue-600 cursor-pointer'>...Read More</span>}
+            </div>
             {
                 <div className='pr-4 flex justify-end gap-2 items-center'>
                     {
@@ -82,7 +86,9 @@ const ReviewCard = ({ review, isChecked, updateHandler, isAdminPage = false }) =
                         />
                     </div>
                     <div className='font-mono max-h-[70vh] overflow-scroll overflow-y-scroll'>
-                        {review.content}
+                        <MarkdownComponent>
+                            {review.content}
+                        </MarkdownComponent>
                     </div>
                 </div>
             </Modal>

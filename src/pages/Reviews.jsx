@@ -11,6 +11,7 @@ import { pluralized } from '../utils/utils';
 import Search from '../components/Search';
 import { useUser } from '../context/context';
 import debounce from 'lodash.debounce';
+import { MarkdownComponent } from '../components/MarkdownComponent';
 
 const Reviews = () => {
     const { user } = useUser();
@@ -28,6 +29,7 @@ const Reviews = () => {
     const [filteredReviews, setFilteredReviews] = useState([]);
     const [isChecked, setIsChecked] = useState(false);
     const [isUpdate, setIsUpdate] = useState({});
+    const [activeTab, setActiveTab] = useState('write');
 
     const debouncedHandleSearch = useMemo(() => {
         return debounce((value) => {
@@ -205,7 +207,27 @@ const Reviews = () => {
                                         <input type="text" placeholder='Title' className='outline-none w-full mr-6 mb-3 font-mono border-2 p-2 rounded-lg' onChange={e => setTitle(e.target.value)} value={title} />
                                         <StarRating rating={rating} setRating={setRating} />
                                     </div>
-                                    <textarea placeholder='Write your review here...' rows={10} className='w-full outline-none border-2 rounded-md p-2 font-mono' onChange={e => setContent(e.target.value)} value={content} />
+                                    <div className='flex w-full mb-3'>
+                                        <button
+                                            className={`w-1/2 p-2 ${activeTab === 'write' ? 'bg-gray-200' : 'bg-gray-100'}`}
+                                            onClick={() => setActiveTab('write')}
+                                        >
+                                            Write
+                                        </button>
+                                        <button
+                                            className={`w-1/2 p-2 ${activeTab === 'preview' ? 'bg-gray-200' : 'bg-gray-100'}`}
+                                            onClick={() => setActiveTab('preview')}
+                                        >
+                                            Preview
+                                        </button>
+                                    </div>
+                                    {activeTab === 'write' ? (
+                                        <textarea placeholder='Write your review here...' rows={10} className='w-full outline-none border-2 rounded-md p-2 font-mono' onChange={e => setContent(e.target.value)} value={content} />
+                                    ) : (
+                                        <div className='w-full border-2 rounded-md p-2 font-mono overflow-y-scroll' style={{ height: '15rem' }}>
+                                            <MarkdownComponent>{content}</MarkdownComponent>
+                                        </div>
+                                    )}
                                     <button onClick={handlePostReview} className='text-white bg-blue-500 rounded-md p-3 w-1/2 mt-2'>Submit</button>
                                 </div>
                             </Modal>
