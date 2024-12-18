@@ -13,7 +13,7 @@ export const MarkdownComponent = ({ children }) => {
                     return !inline && match ? (
                         <SyntaxHighlighter style={dark} language={match[1]} PreTag="div" children={String(children).replace(/\n$/, '')} {...props} />
                     ) : (
-                        <code className={className} {...props}>
+                        <code className={`${className} bg-gray-300 text-black p-1 rounded-md`} {...props}>
                             {children}
                         </code>
                     )
